@@ -1,0 +1,29 @@
+{
+  "criteria": {
+    "used_command": {
+      "conditions": {},
+      "trigger": "fggc-speedometer:command"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png",
+    "description": {
+      "text": "Nutze den /tacho Befehl um die Geschwindigkeitsanzeige zu aktivieren"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "fggc-speedometer:fggc"
+    },
+    "show_toast": true,
+    "title": {
+      "text": "So schnell bin ich also!"
+    }
+  },
+  "requirements": [
+    [
+      "used_command"
+    ]
+  ]
+}

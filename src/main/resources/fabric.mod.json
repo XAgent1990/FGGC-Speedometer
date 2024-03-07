@@ -15,6 +15,9 @@
 	"icon": "assets/fggc-speedometer/icon.png",
 	"environment": "*",
 	"entrypoints": {
+		"fabric-datagen": [
+			"fggc.speedometer.FGGCSpeedometerDataGenerator"
+		],
 		"main": [
 			"fggc.speedometer.FGGCSpeedometer"
 		]

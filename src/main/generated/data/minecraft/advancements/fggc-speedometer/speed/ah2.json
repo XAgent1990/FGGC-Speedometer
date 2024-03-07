@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:fggc-speedometer/speed/ah1",
+  "criteria": {
+    "reached_speed_h_2": {
+      "conditions": {
+        "horizontal_speed": 8.0,
+        "speed": 0.0,
+        "vertical_speed": 0.0
+      },
+      "trigger": "fggc-speedometer:speed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png",
+    "description": {
+      "text": "8"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "fggc-speedometer:fggc"
+    },
+    "show_toast": true,
+    "title": {
+      "text": "AH2"
+    }
+  },
+  "requirements": [
+    [
+      "reached_speed_h_2"
+    ]
+  ]
+}
