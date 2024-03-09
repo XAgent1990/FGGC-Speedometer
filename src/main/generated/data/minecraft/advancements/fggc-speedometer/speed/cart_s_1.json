@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:fggc-speedometer/speed/cart_1",
+  "criteria": {
+    "reached_speed_cart_s_1": {
+      "conditions": {
+        "locomotion": "Minecart",
+        "maximum_speed": 11.4,
+        "minimum_speed": 11.2,
+        "speedtype": "Horizontal"
+      },
+      "trigger": "fggc-speedometer:speed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png",
+    "description": {
+      "text": "Fahre eine Lore bei voller Geschwindigkeit... auf einer diagonale?"
+    },
+    "frame": "challenge",
+    "hidden": true,
+    "icon": {
+      "item": "minecraft:minecart"
+    },
+    "show_toast": true,
+    "title": {
+      "text": "Schräge Sache"
+    }
+  },
+  "requirements": [
+    [
+      "reached_speed_cart_s_1"
+    ]
+  ]
+}

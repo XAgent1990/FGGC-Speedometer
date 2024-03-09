@@ -1,34 +1,35 @@
 {
   "parent": "minecraft:fggc-speedometer/root",
   "criteria": {
-    "reached_speed_h_1": {
+    "reached_speed_boat_1": {
       "conditions": {
-        "horizontal_speed": 5.0,
-        "speed": 0.0,
-        "vertical_speed": 0.0
+        "locomotion": "Boat",
+        "maximum_speed": 8.1,
+        "minimum_speed": 7.9,
+        "speedtype": "Horizontal"
       },
       "trigger": "fggc-speedometer:speed"
     }
   },
   "display": {
-    "announce_to_chat": true,
+    "announce_to_chat": false,
     "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png",
     "description": {
-      "text": "5"
+      "text": "Fahre ein Boot bei voller Geschwindigkeit"
     },
-    "frame": "challenge",
+    "frame": "goal",
     "hidden": false,
     "icon": {
-      "item": "fggc-speedometer:fggc"
+      "item": "minecraft:oak_boat"
     },
     "show_toast": true,
     "title": {
-      "text": "AH1"
+      "text": "Volle Kraft voraus!"
     }
   },
   "requirements": [
     [
-      "reached_speed_h_1"
+      "reached_speed_boat_1"
     ]
   ]
 }

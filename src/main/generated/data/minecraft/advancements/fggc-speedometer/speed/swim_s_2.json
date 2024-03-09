@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:fggc-speedometer/speed/swim_2_1",
+  "criteria": {
+    "reached_speed_swim_s_2": {
+      "conditions": {
+        "locomotion": "Swimming",
+        "maximum_speed": 5.61,
+        "minimum_speed": 5.61,
+        "speedtype": "Horizontal"
+      },
+      "trigger": "fggc-speedometer:speed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png",
+    "description": {
+      "text": "Nutze den Boden um mit deiner Ausrüstung noch schneller zu schwimmen"
+    },
+    "frame": "task",
+    "hidden": true,
+    "icon": {
+      "item": "minecraft:water_bucket"
+    },
+    "show_toast": true,
+    "title": {
+      "text": "Hilfsmittelschwimmer..."
+    }
+  },
+  "requirements": [
+    [
+      "reached_speed_swim_s_2"
+    ]
+  ]
+}

@@ -1,34 +1,35 @@
 {
   "parent": "minecraft:fggc-speedometer/root",
   "criteria": {
-    "reached_speed_t_1": {
+    "reached_speed_swim_1": {
       "conditions": {
-        "horizontal_speed": 0.0,
-        "speed": 10.0,
-        "vertical_speed": 0.0
+        "locomotion": "Swimming",
+        "maximum_speed": 3.92,
+        "minimum_speed": 3.92,
+        "speedtype": "Horizontal"
       },
       "trigger": "fggc-speedometer:speed"
     }
   },
   "display": {
-    "announce_to_chat": true,
+    "announce_to_chat": false,
     "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png",
     "description": {
-      "text": "10"
+      "text": "Schwimme bei voller Geschwindigkeit"
     },
-    "frame": "task",
+    "frame": "goal",
     "hidden": false,
     "icon": {
-      "item": "fggc-speedometer:fggc"
+      "item": "minecraft:water_bucket"
     },
     "show_toast": true,
     "title": {
-      "text": "AT1"
+      "text": "Seepferdchen!"
     }
   },
   "requirements": [
     [
-      "reached_speed_t_1"
+      "reached_speed_swim_1"
     ]
   ]
 }

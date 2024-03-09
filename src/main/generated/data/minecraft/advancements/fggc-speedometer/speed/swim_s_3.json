@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:fggc-speedometer/speed/swim_3",
+  "criteria": {
+    "reached_speed_swim_s_3": {
+      "conditions": {
+        "locomotion": "Swimming",
+        "maximum_speed": 65.0,
+        "minimum_speed": 60.0,
+        "speedtype": "Horizontal"
+      },
+      "trigger": "fggc-speedometer:speed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png",
+    "description": {
+      "text": "Nutze den Boden um übermenschlich schnell zu schwimmen"
+    },
+    "frame": "challenge",
+    "hidden": true,
+    "icon": {
+      "item": "minecraft:water_bucket"
+    },
+    "show_toast": true,
+    "title": {
+      "text": "Menschlicher Torpedo..."
+    }
+  },
+  "requirements": [
+    [
+      "reached_speed_swim_s_3"
+    ]
+  ]
+}

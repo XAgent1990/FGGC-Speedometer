@@ -6,7 +6,7 @@
     }
   },
   "display": {
-    "announce_to_chat": true,
+    "announce_to_chat": false,
     "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png",
     "description": {
       "text": "Nutze den /tacho Befehl um die Geschwindigkeitsanzeige zu aktivieren"
@@ -14,7 +14,8 @@
     "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "fggc-speedometer:fggc"
+      "item": "minecraft:red_banner",
+      "nbt": "{BlockEntityTag:{Patterns:[{Color:15b,Pattern:\"gra\"},{Color:15b,Pattern:\"gra\"},{Color:15b,Pattern:\"gra\"},{Color:8b,Pattern:\"sku\"}]}}"
     },
     "show_toast": true,
     "title": {

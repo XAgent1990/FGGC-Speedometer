@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:fggc-speedometer/speed/swim_1",
+  "criteria": {
+    "reached_speed_swim_2_1": {
+      "conditions": {
+        "locomotion": "Swimming",
+        "maximum_speed": 5.31,
+        "minimum_speed": 5.31,
+        "speedtype": "Horizontal"
+      },
+      "trigger": "fggc-speedometer:speed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png",
+    "description": {
+      "text": "Schwimme bei voller Geschwindigkeit mit passender Schwimmausrüstung"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:water_bucket"
+    },
+    "show_toast": true,
+    "title": {
+      "text": "Freischwimmer!"
+    }
+  },
+  "requirements": [
+    [
+      "reached_speed_swim_2_1"
+    ]
+  ]
+}

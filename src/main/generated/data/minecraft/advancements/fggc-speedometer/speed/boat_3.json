@@ -1,11 +1,12 @@
 {
-  "parent": "minecraft:fggc-speedometer/speed/at1",
+  "parent": "minecraft:fggc-speedometer/speed/boat_2",
   "criteria": {
-    "reached_speed_t_2": {
+    "reached_speed_boat_3": {
       "conditions": {
-        "horizontal_speed": 0.0,
-        "speed": 20.0,
-        "vertical_speed": 0.0
+        "locomotion": "Boat",
+        "maximum_speed": 0.0,
+        "minimum_speed": 60.0,
+        "speedtype": "Horizontal"
       },
       "trigger": "fggc-speedometer:speed"
     }
@@ -14,21 +15,21 @@
     "announce_to_chat": true,
     "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png",
     "description": {
-      "text": "20"
+      "text": "Erreiche Serverleistungstestend-hohe Geschwindigkeiten auf Blaueis"
     },
     "frame": "challenge",
     "hidden": false,
     "icon": {
-      "item": "fggc-speedometer:fggc"
+      "item": "minecraft:oak_boat"
     },
     "show_toast": true,
     "title": {
-      "text": "AT2"
+      "text": "Warpspeed!"
     }
   },
   "requirements": [
     [
-      "reached_speed_t_2"
+      "reached_speed_boat_3"
     ]
   ]
 }

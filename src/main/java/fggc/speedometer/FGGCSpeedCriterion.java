@@ -3,11 +3,15 @@ package fggc.speedometer;
 import com.google.gson.JsonObject;
 import net.minecraft.advancement.criterion.AbstractCriterion;
 import net.minecraft.advancement.criterion.AbstractCriterionConditions;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.vehicle.BoatEntity;
+import net.minecraft.entity.vehicle.MinecartEntity;
 import net.minecraft.predicate.entity.AdvancementEntityPredicateDeserializer;
 import net.minecraft.predicate.entity.AdvancementEntityPredicateSerializer;
 import net.minecraft.predicate.entity.EntityPredicate.Extended;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
+import fggc.speedometer.FGGCSpeedometer.Locomotion;
 import fggc.speedometer.FGGCSpeedometer.Speedtype;
 
 public class FGGCSpeedCriterion extends AbstractCriterion<FGGCSpeedCriterion.Conditions> {
@@ -16,52 +20,57 @@ public class FGGCSpeedCriterion extends AbstractCriterion<FGGCSpeedCriterion.Con
     public static class Conditions extends AbstractCriterionConditions {
 
         double minimumSpeed;
-        double minimumSpeedH;
-        double minimumSpeedV;
         double maximumSpeed;
         Speedtype speedtype;
+        Locomotion locomotion;
 
-        public Conditions(Extended entity, Speedtype speedtype, double minimumSpeed, double maximumSpeed) {
+        public Conditions(Extended entity, Speedtype speedtype, double minimumSpeed, double maximumSpeed, Locomotion locomotion) {
             super(FGGCSpeedCriterion.ID, entity);
-            this.minimumSpeed = this.minimumSpeedH = this.minimumSpeedV = 0d;
-            this.speedtype = speedtype;
+            this.minimumSpeed = minimumSpeed;
             this.maximumSpeed = maximumSpeed;
-            switch (speedtype) {
-                case Total:
-                    this.minimumSpeed = minimumSpeed;
-                    break;
-                case Horizontal:
-                    this.minimumSpeedH = minimumSpeed;
-                    break;
-                case Vertical:
-                    this.minimumSpeedV = minimumSpeed;
-                    break;
-                default:
-                    break;
-            }
+            this.speedtype = speedtype;
+            this.locomotion = locomotion;
         }
  
-        boolean requirementsMet(Speedtype speedtype, double speed) {
+        boolean requirementsMet(ServerPlayerEntity player, Speedtype speedtype, double minSpeed, double maxSpeed) {
             if(this.speedtype != speedtype) return false;
-            switch (this.speedtype) {
-                case Total:
-                    return speed >= minimumSpeed && maximumSpeed > 0 ? speed <= maximumSpeed : true;
-                case Horizontal:
-                    return speed >= minimumSpeedH && maximumSpeed > 0 ? speed <= maximumSpeed : true;
-                case Vertical:
-                    return speed >= minimumSpeedV && maximumSpeed > 0 ? speed <= maximumSpeed : true;
+            switch (locomotion) {
+                case Boat:
+                    if(!(player.getVehicle() instanceof BoatEntity)) return false;
+                    break;
+                case Minecart:
+                    if(!(player.getVehicle() instanceof MinecartEntity)) return false;
+                    break;
+                case Elytra:
+                    if(!(player.isFallFlying())) return false;
+                    break;
+                case Swimming:
+                    if(!(player.isSwimming())) return false;
+                    break;
+                case OnFoot:
+                    if(!(player.isOnGround())) return false;
+                    break;
+                case Falling:
+                    if (player.isFallFlying() || 
+                        player.isOnGround() || 
+                        player.isSwimming() || 
+                        player.getVehicle() instanceof Entity) return false;
+                    break;
                 default:
-                    return false;
+                    break;
             }
+            boolean speedReached = minSpeed >= minimumSpeed;
+            boolean speedExceded = (maximumSpeed > 0) ? (maxSpeed <= maximumSpeed) : true;
+            return speedReached && !speedExceded;
         }
         
         @Override
         public JsonObject toJson(AdvancementEntityPredicateSerializer predicateSerializer) {
             JsonObject json = super.toJson(predicateSerializer);
-            json.addProperty("speed", this.minimumSpeed);
-            json.addProperty("horizontal_speed", this.minimumSpeedH);
-            json.addProperty("vertical_speed", this.minimumSpeedV);
-            json.addProperty("maxmium_speed", this.maximumSpeed);
+            json.addProperty("minimum_speed", this.minimumSpeed);
+            json.addProperty("maximum_speed", this.maximumSpeed);
+            json.addProperty("speedtype", this.speedtype.name());
+            json.addProperty("locomotion", this.locomotion.name());
             return json;
         }
     }
@@ -74,29 +83,17 @@ public class FGGCSpeedCriterion extends AbstractCriterion<FGGCSpeedCriterion.Con
     @Override
     protected Conditions conditionsFromJson(JsonObject obj, Extended playerPredicate,
             AdvancementEntityPredicateDeserializer predicateDeserializer) {
-        Speedtype speedtype = Speedtype.Total;
-        double minimumSpeed = obj.get("speed").getAsDouble();
-        double minimumSpeedH = obj.get("horizontal_speed").getAsDouble();
-        double minimumSpeedV = obj.get("vertical_speed").getAsDouble();
+        double minimumSpeed = obj.get("minimum_speed").getAsDouble();
         double maximumSpeed = obj.get("maximum_speed").getAsDouble();
-        double minSpeed = 0d;
-        if(minimumSpeed > 0d){
-            speedtype = Speedtype.Total;
-            minSpeed = minimumSpeed;
-        } else if(minimumSpeedH > 0d){
-            speedtype = Speedtype.Horizontal;
-            minSpeed = minimumSpeedH;
-        } else if(minimumSpeedV > 0d){
-            speedtype = Speedtype.Vertical;
-            minSpeed = minimumSpeedV;
-        }
-        Conditions conditions = new Conditions(playerPredicate, speedtype, minSpeed, maximumSpeed);
+        Speedtype speedtype = Speedtype.valueOf(obj.get("speedtype").getAsString());
+        Locomotion locomotion = Locomotion.valueOf(obj.get("locomotion").getAsString());
+        Conditions conditions = new Conditions(playerPredicate, speedtype, minimumSpeed, maximumSpeed, locomotion);
         return conditions;
     }
 
-    protected void trigger(ServerPlayerEntity player, Speedtype speedtype, double speed){
+    protected void trigger(ServerPlayerEntity player, Speedtype speedtype, double minSpeed, double maxSpeed){
         trigger(player, conditions -> {
-            return conditions.requirementsMet(speedtype, speed);
+            return conditions.requirementsMet(player, speedtype, minSpeed, maxSpeed);
         });
     }
 }

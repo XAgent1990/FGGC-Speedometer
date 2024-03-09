@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:fggc-speedometer/speed/swim_1",
+  "criteria": {
+    "reached_speed_swim_s_1": {
+      "conditions": {
+        "locomotion": "Swimming",
+        "maximum_speed": 4.0,
+        "minimum_speed": 4.0,
+        "speedtype": "Horizontal"
+      },
+      "trigger": "fggc-speedometer:speed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png",
+    "description": {
+      "text": "Schwimme in einer diagonalen, um einen Meter Vorsprung in nur 12,5 Sekunden zu erlangen!"
+    },
+    "frame": "task",
+    "hidden": true,
+    "icon": {
+      "item": "minecraft:water_bucket"
+    },
+    "show_toast": true,
+    "title": {
+      "text": "Schneller ist schneller..."
+    }
+  },
+  "requirements": [
+    [
+      "reached_speed_swim_s_1"
+    ]
+  ]
+}

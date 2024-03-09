@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:fggc-speedometer/speed/swim_1",
+  "criteria": {
+    "reached_speed_swim_2_2": {
+      "conditions": {
+        "locomotion": "Swimming",
+        "maximum_speed": 9.8,
+        "minimum_speed": 9.8,
+        "speedtype": "Horizontal"
+      },
+      "trigger": "fggc-speedometer:speed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png",
+    "description": {
+      "text": "Schwimme bei voller Geschwindigkeit mit einem Delfin"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:water_bucket"
+    },
+    "show_toast": true,
+    "title": {
+      "text": "Wie ein Delfin!"
+    }
+  },
+  "requirements": [
+    [
+      "reached_speed_swim_2_2"
+    ]
+  ]
+}

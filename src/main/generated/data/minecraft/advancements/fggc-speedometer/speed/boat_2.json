@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:fggc-speedometer/speed/boat_1",
+  "criteria": {
+    "reached_speed_boat_2": {
+      "conditions": {
+        "locomotion": "Boat",
+        "maximum_speed": 42.0,
+        "minimum_speed": 38.0,
+        "speedtype": "Horizontal"
+      },
+      "trigger": "fggc-speedometer:speed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png",
+    "description": {
+      "text": "Fahre ein Boot bei voller Geschwindigkeit auf Eis"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:oak_boat"
+    },
+    "show_toast": true,
+    "title": {
+      "text": "Go-Kart in Minecraft?!"
+    }
+  },
+  "requirements": [
+    [
+      "reached_speed_boat_2"
+    ]
+  ]
+}

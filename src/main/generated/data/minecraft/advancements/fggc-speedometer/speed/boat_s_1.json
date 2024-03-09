@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:fggc-speedometer/speed/boat_1",
+  "criteria": {
+    "reached_speed_boat_s_1": {
+      "conditions": {
+        "locomotion": "Boat",
+        "maximum_speed": 2.0,
+        "minimum_speed": 2.0,
+        "speedtype": "Horizontal"
+      },
+      "trigger": "fggc-speedometer:speed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png",
+    "description": {
+      "text": "Fahre ein Boot bei voller Geschwindigkeit... durchs Land!"
+    },
+    "frame": "goal",
+    "hidden": true,
+    "icon": {
+      "item": "minecraft:oak_boat"
+    },
+    "show_toast": true,
+    "title": {
+      "text": "Chuck Norris wäre stolz"
+    }
+  },
+  "requirements": [
+    [
+      "reached_speed_boat_s_1"
+    ]
+  ]
+}

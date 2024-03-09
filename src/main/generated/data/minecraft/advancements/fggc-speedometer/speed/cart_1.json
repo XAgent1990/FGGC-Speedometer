@@ -1,34 +1,35 @@
 {
   "parent": "minecraft:fggc-speedometer/root",
   "criteria": {
-    "reached_speed_v_1": {
+    "reached_speed_cart_1": {
       "conditions": {
-        "horizontal_speed": 0.0,
-        "speed": 0.0,
-        "vertical_speed": 40.0
+        "locomotion": "Minecart",
+        "maximum_speed": 8.1,
+        "minimum_speed": 7.9,
+        "speedtype": "Horizontal"
       },
       "trigger": "fggc-speedometer:speed"
     }
   },
   "display": {
-    "announce_to_chat": true,
+    "announce_to_chat": false,
     "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png",
     "description": {
-      "text": "40"
+      "text": "Fahre eine Lore bei voller Geschwindigkeit"
     },
     "frame": "goal",
     "hidden": false,
     "icon": {
-      "item": "fggc-speedometer:fggc"
+      "item": "minecraft:minecart"
     },
     "show_toast": true,
     "title": {
-      "text": "AV1"
+      "text": "Volle Fahrt voraus!"
     }
   },
   "requirements": [
     [
-      "reached_speed_v_1"
+      "reached_speed_cart_1"
     ]
   ]
 }

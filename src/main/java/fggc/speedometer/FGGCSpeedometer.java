@@ -33,8 +33,6 @@ public class FGGCSpeedometer implements ModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger("fggc-speedometer");
 	public static final String MOD_ID = "fggc-speedometer"; 
 
-	public static final Item FGGC_ITEM = new Item(new FabricItemSettings());
-
 	public static FGGCCommandCriterion COMMAND = Criteria.register(new FGGCCommandCriterion());
 	public static FGGCSpeedCriterion SPEED = Criteria.register(new FGGCSpeedCriterion());
 
@@ -55,6 +53,16 @@ public class FGGCSpeedometer implements ModInitializer {
 		Vertical
 	}
 
+	public enum Locomotion{
+		Boat,
+		Minecart,
+		Elytra,
+		Swimming,
+		OnFoot,
+		Falling,
+		Any
+	}
+
 	private static PlayerList PL = new PlayerList();
 
 	@Override
@@ -68,8 +76,6 @@ public class FGGCSpeedometer implements ModInitializer {
 		vels = new ArrayList<Double>(ListSize);
 		velsH = new ArrayList<Double>(ListSize);
 		velsV = new ArrayList<Double>(ListSize);
-
-		Registry.register(Registry.ITEM, new Identifier(MOD_ID, "fggc"), FGGC_ITEM);
 
 		ServerTickEvents.END_SERVER_TICK.register((MinecraftServer server) -> {
 			for(String name : server.getPlayerNames()){
@@ -118,21 +124,15 @@ public class FGGCSpeedometer implements ModInitializer {
 		SpeedometerMode mode;
 		double timer;
 		long deltaTimeMs;
-		// boolean grounded;
 		ArrayList<Double> velocities, velocitiesH, velocitiesV;
-		ArrayList<Vec3d> positions;
-		ArrayList<Long> timesMs;
 		Vec3d lastPos;
 		PlayerTracker(String name){
 			this.name = name;
 			this.mode = SpeedometerMode.Aus;
-			// this.grounded = true;
 			this.lastPos = Vec3d.ZERO;
 			this.velocities = new ArrayList<Double>(ListSize+1);
 			this.velocitiesH = new ArrayList<Double>(ListSize+1);
 			this.velocitiesV = new ArrayList<Double>(ListSize+1);
-			this.positions = new ArrayList<Vec3d>(ListSize+1);
-			this.timesMs = new ArrayList<Long>(ListSize+1);
 		}
 	}
 
@@ -141,51 +141,30 @@ public class FGGCSpeedometer implements ModInitializer {
 		public PlayerList(){
 			pt = new ArrayList<PlayerTracker>();
 		}
-		public byte append(String name, Vec3d pos){
+		public byte append(String name, ServerPlayerEntity player){
+			Vec3d pos = player.getPos();
 			boolean exists = exists(name);
 			if (!exists || size(index(name)) == 0) {
 				if(!exists) create(name);
 				byte i = (byte)(pt.size() - 1);
-				add(i, 0d, 0d, 0d, pos, Util.getMeasuringTimeMs());
+				add(i, 0d, 0d, 0d, pos);
 				return i;
 			}
 			byte index = index(name);
 			Vec3d last_pos = getLastPos(index);
+			double distance = last_pos.distanceTo(pos);
+			double distanceH = last_pos.distanceTo(new Vec3d(pos.x, last_pos.y, pos.z));
 			double distanceV = pos.y < last_pos.y ? Math.abs(pos.y-last_pos.y) : 0d;
-			double distanceH = Math.sqrt(Math.pow((pos.x-last_pos.x),2)+
-										 Math.pow((pos.z-last_pos.z),2));
-			double distance = Math.sqrt(Math.pow((pos.x-last_pos.x),2)+
-						  	  			Math.pow((pos.y-last_pos.y),2)+
-						  	 			Math.pow((pos.z-last_pos.z),2));
-			long deltaTime = Util.getMeasuringTimeMs() - lastTimestamp;
-			pt.get(index).deltaTimeMs = deltaTime;
-			double v = distance * 1000d / deltaTime;
-			double vH = distanceH * 1000d / deltaTime;
-			double vV = distanceV * 1000d / deltaTime;
-			add(index, v, vH, vV, pos, Util.getMeasuringTimeMs());
+			double v = distance * 20;
+			double vH = distanceH * 20;
+			double vV = distanceV * 20;
+			add(index, v, vH, vV, pos);
 			pt.get(index).lastPos = pos;
 			while(size(index) > ListSize)
 				removeFirst(index);
 			return index;
 		}
-		// public boolean isGrounded(String name){
-		// 	if(exists(name))
-		// 		return pt.get(index(name)).grounded;
-		// 	return true;
-		// }
-		// public void reset(String name){
-		// 	if(exists(name)){
-		// 		byte index = index(name);
-		// 		LOGGER.info("Landed!");
-		// 		pt.get(index).velocities.clear();
-		// 		pt.get(index).grounded = true;
-		// 	}
-		// }
 		public double getAverageVelocity(byte index){
-			//double v = 0;
-			//for(double item : pt.get(index).velocities)
-			//	v += item;
-			//return v / ListSize;
 			@SuppressWarnings("unchecked")
 			ArrayList<Double> velocities = (ArrayList<Double>)pt.get(index).velocities.clone();
 			velocities.sort(null);
@@ -196,10 +175,6 @@ public class FGGCSpeedometer implements ModInitializer {
 			return (v1+v2+v3)/3;
 		}
 		public double getAverageVelocityH(byte index){
-			//double v = 0;
-			//for(double item : pt.get(index).velocitiesH)
-			//	v += item;
-			//return v / ListSize;
 			@SuppressWarnings("unchecked")
 			ArrayList<Double> velocitiesH = (ArrayList<Double>)pt.get(index).velocitiesH.clone();
 			velocitiesH.sort(null);
@@ -210,10 +185,6 @@ public class FGGCSpeedometer implements ModInitializer {
 			return (v1+v2+v3)/3;
 		}
 		public double getAverageVelocityV(byte index){
-			//double v = 0;
-			//for(double item : pt.get(index).velocitiesH)
-			//	v += item;
-			//return v / ListSize;
 			@SuppressWarnings("unchecked")
 			ArrayList<Double> velocitiesV = (ArrayList<Double>)pt.get(index).velocitiesV.clone();
 			velocitiesV.sort(null);
@@ -244,13 +215,10 @@ public class FGGCSpeedometer implements ModInitializer {
 			pt.add(new PlayerTracker(name));
 			log("Registered new Player '" + name + "' to Speedometerlist!");
 		}
-		private void add(byte index, double velocity, double velocityH, double velocityV, Vec3d pos, Long timeMs){
+		private void add(byte index, double velocity, double velocityH, double velocityV, Vec3d pos){
 			pt.get(index).velocities.add(velocity);
 			pt.get(index).velocitiesH.add(velocityH);
 			pt.get(index).velocitiesV.add(velocityV);
-			pt.get(index).positions.add(pos);
-			pt.get(index).timesMs.add(timeMs);
-			// pt.get(index).grounded = false;
 		}
 		private Vec3d getLastPos(byte index){
 			return pt.get(index).lastPos;
@@ -262,8 +230,6 @@ public class FGGCSpeedometer implements ModInitializer {
 			pt.get(index).velocities.remove(0);
 			pt.get(index).velocitiesH.remove(0);
 			pt.get(index).velocitiesV.remove(0);
-			pt.get(index).positions.remove(0);
-			pt.get(index).timesMs.remove(0);
 		}
 		private byte index(String name){
 			byte i;
@@ -277,32 +243,33 @@ public class FGGCSpeedometer implements ModInitializer {
 	}
 
 	private void tickPlayer(MinecraftServer server, ServerPlayerEntity player, String name){
-		byte index = PL.append(name, player.getPos());
+		byte index = PL.append(name, player);
 		if(player.isOnGround()) PL.resetTimer(index);
 		else PL.addTimer(index, PL.getDeltaTimeMs(index) / 1000d);
 		if(PL.getMode(index) == SpeedometerMode.An ||
 		  (PL.getMode(index) == SpeedometerMode.Flugmodus && PL.getTimer(index) >= 1)){
 
 			// Total Velocity
-			double v = Math.round(PL.getAverageVelocity(index) * 10)/10d;
+			double f = 100d;
+			double v = Math.round(PL.getAverageVelocity(index) * f)/f;
 			if (vels.size() >= ListSize)
 				vels.remove(0);
 			vels.add(v);
-			SPEED.trigger(player, Speedtype.Total, arrayListMin(vels));
+			SPEED.trigger(player, Speedtype.Total, arrayListMin(vels), arrayListMax(vels));
 
 			// Horizontal Velocity
-			double vH = Math.round(PL.getAverageVelocityH(index) * 10)/10d;
+			double vH = Math.round(PL.getAverageVelocityH(index) * f)/f;
 			if (velsH.size() >= ListSize)
 				velsH.remove(0);
 			velsH.add(vH);
-			SPEED.trigger(player, Speedtype.Horizontal, arrayListMin(velsH));
+			SPEED.trigger(player, Speedtype.Horizontal, arrayListMin(velsH), arrayListMax(velsH));
 
 			// Vertical Velocity
-			double vV = Math.round(PL.getAverageVelocityV(index) * 10)/10d;
+			double vV = Math.round(PL.getAverageVelocityV(index) * f)/f;
 			if (velsV.size() >= ListSize)
 				velsV.remove(0);
 			velsV.add(vV);
-			SPEED.trigger(player, Speedtype.Vertical, arrayListMin(velsV));
+			SPEED.trigger(player, Speedtype.Vertical, arrayListMin(velsV), arrayListMax(velsV));
 			
 			String text = "Geschwindigkeit: " + vH + "m/s";
 			//if(!p.isOnGround())
@@ -317,6 +284,14 @@ public class FGGCSpeedometer implements ModInitializer {
 		for(double x : arr)
 			if(x < min) min = x;
 		return min;
+	}
+
+	private static double arrayListMax(ArrayList<Double> arr){
+		if(arr == null) return 0d;
+		double max = 0d;
+		for(double x : arr)
+			if(x > max) max = x;
+		return max;
 	}
 
 	private static void log(String text){
