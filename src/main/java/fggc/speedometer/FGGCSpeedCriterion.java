@@ -13,7 +13,6 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import fggc.speedometer.FGGCSpeedometer.Locomotion;
 import fggc.speedometer.FGGCSpeedometer.Speedtype;
-import static fggc.speedometer.FGGCSpeedometer.log;
 
 public class FGGCSpeedCriterion extends AbstractCriterion<FGGCSpeedCriterion.Conditions> {
     static final Identifier ID = new Identifier("fggc-speedometer","speed");

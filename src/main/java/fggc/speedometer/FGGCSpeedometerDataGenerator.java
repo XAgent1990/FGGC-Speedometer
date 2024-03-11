@@ -28,6 +28,7 @@ public class FGGCSpeedometerDataGenerator implements DataGeneratorEntrypoint {
             super(fabricDataGenerator);
         }
 
+        @SuppressWarnings("unused")
         @Override
         public void generateAdvancement(Consumer<Advancement> consumer) {
             String speedName = "reached_speed_";
