@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:fggc-speedometer/root",
+  "criteria": {
+    "reached_speed_fall_1": {
+      "conditions": {
+        "locomotion": "Falling",
+        "maximum_speed": 100.0,
+        "minimum_speed": 13.0,
+        "speedtype": "Vertical"
+      },
+      "trigger": "fggc-speedometer:speed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png",
+    "description": {
+      "text": "Erreiche eine schmerzhafte Fallgeschwindigkeit"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:anvil"
+    },
+    "show_toast": true,
+    "title": {
+      "text": "Schwerkraft ist ein übles Ding"
+    }
+  },
+  "requirements": [
+    [
+      "reached_speed_fall_1"
+    ]
+  ]
+}

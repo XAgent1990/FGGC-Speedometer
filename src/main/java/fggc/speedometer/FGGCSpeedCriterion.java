@@ -13,6 +13,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import fggc.speedometer.FGGCSpeedometer.Locomotion;
 import fggc.speedometer.FGGCSpeedometer.Speedtype;
+import static fggc.speedometer.FGGCSpeedometer.log;
 
 public class FGGCSpeedCriterion extends AbstractCriterion<FGGCSpeedCriterion.Conditions> {
     static final Identifier ID = new Identifier("fggc-speedometer","speed");
@@ -52,15 +53,14 @@ public class FGGCSpeedCriterion extends AbstractCriterion<FGGCSpeedCriterion.Con
                     break;
                 case Falling:
                     if (player.isFallFlying() || 
-                        player.isOnGround() || 
                         player.isSwimming() || 
                         player.getVehicle() instanceof Entity) return false;
-                    break;
+                    return maxSpeed > minimumSpeed;
                 default:
                     break;
             }
             boolean speedReached = minSpeed >= minimumSpeed;
-            boolean speedExceded = (maximumSpeed > 0) ? (maxSpeed <= maximumSpeed) : true;
+            boolean speedExceded = (maximumSpeed > 0) ? (maxSpeed > maximumSpeed) : false;
             return speedReached && !speedExceded;
         }
         

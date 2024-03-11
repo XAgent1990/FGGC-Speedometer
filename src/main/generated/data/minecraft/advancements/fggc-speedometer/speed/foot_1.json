@@ -1,0 +1,36 @@
+{
+  "parent": "minecraft:fggc-speedometer/root",
+  "criteria": {
+    "reached_speed_foot_1": {
+      "conditions": {
+        "locomotion": "OnFoot",
+        "maximum_speed": 5.73,
+        "minimum_speed": 5.61,
+        "speedtype": "Total"
+      },
+      "trigger": "fggc-speedometer:speed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png",
+    "description": {
+      "text": "Renne, so schnell du kannst!"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:leather_boots",
+      "nbt": "{Damage:0}"
+    },
+    "show_toast": true,
+    "title": {
+      "text": "Flash! Ahhhhh!"
+    }
+  },
+  "requirements": [
+    [
+      "reached_speed_foot_1"
+    ]
+  ]
+}

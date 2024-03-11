@@ -3,6 +3,7 @@
 	"package": "fggc.speedometer.mixin",
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
+		"FGGCEntityDataSaverMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

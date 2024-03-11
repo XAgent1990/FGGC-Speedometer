@@ -1,0 +1,36 @@
+{
+  "parent": "minecraft:fggc-speedometer/speed/foot_1",
+  "criteria": {
+    "reached_speed_foot_2": {
+      "conditions": {
+        "locomotion": "OnFoot",
+        "maximum_speed": 10.5,
+        "minimum_speed": 10.4,
+        "speedtype": "Horizontal"
+      },
+      "trigger": "fggc-speedometer:speed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png",
+    "description": {
+      "text": "Der schnellte Mensch der Welt! Renne mit circa 10,44m/s"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:leather_boots",
+      "nbt": "{Damage:0}"
+    },
+    "show_toast": true,
+    "title": {
+      "text": "Usain Bolt!"
+    }
+  },
+  "requirements": [
+    [
+      "reached_speed_foot_2"
+    ]
+  ]
+}

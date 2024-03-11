@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:fggc-speedometer/speed/fall_2",
+  "criteria": {
+    "reached_speed_fall_3": {
+      "conditions": {
+        "locomotion": "Falling",
+        "maximum_speed": 100.0,
+        "minimum_speed": 78.395,
+        "speedtype": "Vertical"
+      },
+      "trigger": "fggc-speedometer:speed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png",
+    "description": {
+      "text": "Erreiche maximale Geschwindigkeit im freien Fall!"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:anvil"
+    },
+    "show_toast": true,
+    "title": {
+      "text": "Terminal Velocity!"
+    }
+  },
+  "requirements": [
+    [
+      "reached_speed_fall_3"
+    ]
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "parent": "minecraft:fggc-speedometer/root",
+  "criteria": {
+    "reached_speed_fly_1": {
+      "conditions": {
+        "locomotion": "Elytra",
+        "maximum_speed": 0.0,
+        "minimum_speed": 30.0,
+        "speedtype": "Total"
+      },
+      "trigger": "fggc-speedometer:speed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png",
+    "description": {
+      "text": "Fliege so schnell wie eine Rakete (30+m/s)"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:elytra",
+      "nbt": "{Damage:0}"
+    },
+    "show_toast": true,
+    "title": {
+      "text": "Raketenantrieb"
+    }
+  },
+  "requirements": [
+    [
+      "reached_speed_fly_1"
+    ]
+  ]
+}

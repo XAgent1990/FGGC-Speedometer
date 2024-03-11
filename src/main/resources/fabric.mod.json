@@ -23,6 +23,7 @@
 		]
 	},
 	"mixins": [
+		"fggc-speedometer.mixins.json"
 	],
 	"depends": {
 		"fabricloader": ">=0.15.6",

@@ -1,15 +1,24 @@
-// 1.19.2	2024-03-09T00:34:51.4018863	Advancements
+// 1.19.2	2024-03-12T00:53:10.1972603	Advancements
+da0f036cb0a380f024abc72d3c8f7010bd1d1d29 data\minecraft\advancements\fggc-speedometer\speed\fall_3.json
+f1f9657ea5d99ae32611d651b53461049c8148f8 data\minecraft\advancements\fggc-speedometer\speed\fly_3.json
+061de701f13112949bba83b55c324f1373b0062b data\minecraft\advancements\fggc-speedometer\speed\foot_1.json
 5e3a3d2258fe81d31541b08845d321bd084aa463 data\minecraft\advancements\fggc-speedometer\speed\boat_1.json
 a91d8ec5dcae217f0c38362c43b4b008c476ce03 data\minecraft\advancements\fggc-speedometer\speed\swim_1.json
 6403e1b21364778812ae6392ada156d81a776890 data\minecraft\advancements\fggc-speedometer\speed\swim_s_2.json
 1a70507ce502aeef1b58e88aae0901bdf626b3eb data\minecraft\advancements\fggc-speedometer\speed\boat_s_1.json
+196220f8eab1667bc175457faff56e2446dba47f data\minecraft\advancements\fggc-speedometer\speed\foot_2.json
 44525208e06d252ce9129f2fff6ce798194efa84 data\minecraft\advancements\fggc-speedometer\speed\boat_2.json
+9e5184e4a8ba29fdc664cb9461535f1ae6dced1c data\minecraft\advancements\fggc-speedometer\speed\fly_1.json
 d7a894ca6582d5af9e104cc5864458a28c803723 data\minecraft\advancements\fggc-speedometer\speed\swim_2_2.json
 14c37d3087789420e332f1d5330d94dea82b443b data\minecraft\advancements\fggc-speedometer\speed\swim_3.json
 a7fea2e40abc5f6ed550d04fcd71a5a4aebcbd55 data\minecraft\advancements\fggc-speedometer\root.json
 7158e55fcc98b526a7e839279b31446e80c17c52 data\minecraft\advancements\fggc-speedometer\speed\cart_1.json
 d6034f0182d78f8f7a6868f7baaa7b322eb2ae79 data\minecraft\advancements\fggc-speedometer\speed\boat_3.json
 063b2a596f842d3cb12234c82ca4d12911c31307 data\minecraft\advancements\fggc-speedometer\speed\swim_s_3.json
+7c0545b224e6098d4a0e46bc9315283b3c89184e data\minecraft\advancements\fggc-speedometer\speed\fall_1.json
+e641723a96aecdb404c0f3efc61669fff4f4bd53 data\minecraft\advancements\fggc-speedometer\speed\fall_2.json
+5e14fcaf3e5832206cdf90842036e7e1a1f65cfd data\minecraft\advancements\fggc-speedometer\speed\foot_s_1.json
 ecc28a18f11d845ab15fb9b4496333741afd4a96 data\minecraft\advancements\fggc-speedometer\speed\swim_s_1.json
 e8c6efa87c7dca2d96c6ea49c11e95e5565bfff7 data\minecraft\advancements\fggc-speedometer\speed\cart_s_1.json
+2aa25068ff4011c71c017b27b4290fbdfa2427dd data\minecraft\advancements\fggc-speedometer\speed\fly_2.json
 1e8eb4ed833c483d4afc3e24ed753a484b4cd06a data\minecraft\advancements\fggc-speedometer\speed\swim_2_1.json

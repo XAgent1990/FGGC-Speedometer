@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:fggc-speedometer/speed/fall_1",
+  "criteria": {
+    "reached_speed_fall_2": {
+      "conditions": {
+        "locomotion": "Falling",
+        "maximum_speed": 100.0,
+        "minimum_speed": 32.0,
+        "speedtype": "Vertical"
+      },
+      "trigger": "fggc-speedometer:speed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png",
+    "description": {
+      "text": "Erreiche eine potentiell tödliche Fallgeschwindigkeit"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:anvil"
+    },
+    "show_toast": true,
+    "title": {
+      "text": "Das wird schmerzhaft..."
+    }
+  },
+  "requirements": [
+    [
+      "reached_speed_fall_2"
+    ]
+  ]
+}

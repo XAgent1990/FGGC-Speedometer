@@ -4,24 +4,30 @@ import java.util.ArrayList;
 import java.lang.Math;
 
 import net.minecraft.advancement.criterion.Criteria;
-import net.minecraft.item.Item;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.registry.Registry;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.tree.LiteralCommandNode;
+
+import fggc.speedometer.util.FGGCSpeedometerData;
+import fggc.speedometer.util.IEntityDataSaver;
 
 import static net.minecraft.server.command.CommandManager.literal;
 import static net.minecraft.server.command.CommandManager.argument;
@@ -41,7 +47,7 @@ public class FGGCSpeedometer implements ModInitializer {
 
 	public static long lastTimestamp = Util.getMeasuringTimeMs();
 
-	private enum SpeedometerMode{
+	public enum SpeedometerMode{
 		An,
 		Flugmodus,
 		Aus
@@ -84,8 +90,22 @@ public class FGGCSpeedometer implements ModInitializer {
 			lastTimestamp = Util.getMeasuringTimeMs();
 		});
 
-		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> 
-			dispatcher.register(literal("tacho")
+		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
+			ServerPlayerEntity player = handler.player;
+			String name = player.getName().getString();
+			SpeedometerMode mode = FGGCSpeedometerData.getMode((IEntityDataSaver)player);
+			PL.setMode(name, mode);
+		});
+
+		ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> {
+			ServerPlayerEntity player = handler.player;
+			String name = player.getName().getString();
+			SpeedometerMode mode = PL.getMode(PL.index(name));
+			FGGCSpeedometerData.setMode((IEntityDataSaver)player, mode);
+		});
+
+		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
+			final LiteralCommandNode<ServerCommandSource> tachoNode = dispatcher.register(literal("tacho")
 				.executes(context -> {
 					context.getSource().sendFeedback(Text.literal("Keine Argumente angegeben beim Tacho"), false);
 					return Command.SINGLE_SUCCESS;
@@ -95,6 +115,7 @@ public class FGGCSpeedometer implements ModInitializer {
 				.executes(context -> {
 					String arg = StringArgumentType.getString(context, "Modus").toLowerCase();
 					String name = context.getSource().getName();
+					ServerPlayerEntity player = context.getSource().getPlayer();
 					switch (arg) {
 						case "aus":
 							context.getSource().sendFeedback(Text.literal("Tacho ausgeschaltet."), false);
@@ -103,20 +124,24 @@ public class FGGCSpeedometer implements ModInitializer {
 						case "flugmodus":
 							context.getSource().sendFeedback(Text.literal("Tacho in Flugmodus geschaltet."), false);
 							PL.setMode(name, SpeedometerMode.Flugmodus);
-							COMMAND.trigger(context.getSource().getPlayer());
+							COMMAND.trigger(player);
 							break;
 						case "an":
 							context.getSource().sendFeedback(Text.literal("Tacho eingeschaltet."), false);
 							PL.setMode(name, SpeedometerMode.An);
-							COMMAND.trigger(context.getSource().getPlayer());
+							COMMAND.trigger(player);
 							break;
 						default:
-							break;
+							return 1;
 					}
+					NbtCompound nbt = new NbtCompound();
+					nbt.putString("TachoMode", PL.getMode(PL.index(name)).toString());
+					player.writeCustomDataToNbt(nbt);
 					return 1;
 				}))
-			)
-		);
+			);
+			dispatcher.register(literal("Tacho").redirect(tachoNode));
+		});
 	}
 
 	private static class PlayerTracker{
@@ -167,6 +192,7 @@ public class FGGCSpeedometer implements ModInitializer {
 		public double getAverageVelocity(byte index){
 			@SuppressWarnings("unchecked")
 			ArrayList<Double> velocities = (ArrayList<Double>)pt.get(index).velocities.clone();
+			if (velocities.size() < ListSize) return 0d;
 			velocities.sort(null);
 			Double v1, v2, v3;
 			v1 = velocities.get(ListSize/4);
@@ -177,6 +203,7 @@ public class FGGCSpeedometer implements ModInitializer {
 		public double getAverageVelocityH(byte index){
 			@SuppressWarnings("unchecked")
 			ArrayList<Double> velocitiesH = (ArrayList<Double>)pt.get(index).velocitiesH.clone();
+			if (velocitiesH.size() < ListSize) return 0d;
 			velocitiesH.sort(null);
 			Double v1, v2, v3;
 			v1 = velocitiesH.get(ListSize/4);
@@ -187,6 +214,7 @@ public class FGGCSpeedometer implements ModInitializer {
 		public double getAverageVelocityV(byte index){
 			@SuppressWarnings("unchecked")
 			ArrayList<Double> velocitiesV = (ArrayList<Double>)pt.get(index).velocitiesV.clone();
+			if (velocitiesV.size() < ListSize) return 0d;
 			velocitiesV.sort(null);
 			Double v1, v2, v3;
 			v1 = velocitiesV.get(ListSize/4);
@@ -269,8 +297,13 @@ public class FGGCSpeedometer implements ModInitializer {
 			if (velsV.size() >= ListSize)
 				velsV.remove(0);
 			velsV.add(vV);
-			SPEED.trigger(player, Speedtype.Vertical, arrayListMin(velsV), arrayListMax(velsV));
+			SPEED.trigger(player, Speedtype.Vertical, arrayListMin(PL.pt.get(index).velocitiesV), arrayListMax(PL.pt.get(index).velocitiesV));
 			
+			if (v >= 343) {
+				Vec3d pos = player.getPos();
+				player.world.playSound(pos.x, pos.y, pos.z, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1, 1, true);
+			}
+
 			String text = "Geschwindigkeit: " + vH + "m/s";
 			//if(!p.isOnGround())
 			text += " | Fluggeschwindigkeit: " + v + "m/s";
@@ -279,7 +312,7 @@ public class FGGCSpeedometer implements ModInitializer {
 	}
 
 	private static double arrayListMin(ArrayList<Double> arr){
-		if(arr == null) return 0d;
+		if(arr == null || arr.size() < ListSize) return 0d;
 		double min = arr.get(0);
 		for(double x : arr)
 			if(x < min) min = x;
@@ -287,14 +320,19 @@ public class FGGCSpeedometer implements ModInitializer {
 	}
 
 	private static double arrayListMax(ArrayList<Double> arr){
-		if(arr == null) return 0d;
+		if(arr == null || arr.size() < ListSize) return 0d;
 		double max = 0d;
-		for(double x : arr)
-			if(x > max) max = x;
-		return max;
+		double y = 0d;
+		for(double x : arr){
+			if(x > max){
+				y = max;
+				max = x;
+			}
+		}
+		return y > 0 ? max : 0d;
 	}
 
-	private static void log(String text){
+	public static void log(String text){
 		LOGGER.info("[FGGC-Speedometer] " + text);
 	}
 }

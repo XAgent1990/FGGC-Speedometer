@@ -1,0 +1,36 @@
+{
+  "parent": "minecraft:fggc-speedometer/speed/fly_2",
+  "criteria": {
+    "reached_speed_fly_3": {
+      "conditions": {
+        "locomotion": "Elytra",
+        "maximum_speed": 0.0,
+        "minimum_speed": 343.0,
+        "speedtype": "Vertical"
+      },
+      "trigger": "fggc-speedometer:speed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png",
+    "description": {
+      "text": "Breche die Schallmauer! (343+m/s)"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:elytra",
+      "nbt": "{Damage:0}"
+    },
+    "show_toast": true,
+    "title": {
+      "text": "Überschall!"
+    }
+  },
+  "requirements": [
+    [
+      "reached_speed_fly_3"
+    ]
+  ]
+}
