@@ -3,10 +3,12 @@
   "criteria": {
     "reached_speed_fall_2": {
       "conditions": {
+        "id": "fall_2",
         "locomotion": "Falling",
         "maximum_speed": 100.0,
         "minimum_speed": 32.0,
-        "speedtype": "Vertical"
+        "speedtype": "Vertical",
+        "trigger_time": 0.0
       },
       "trigger": "fggc-speedometer:speed"
     }

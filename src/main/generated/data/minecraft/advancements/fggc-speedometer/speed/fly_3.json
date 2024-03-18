@@ -3,10 +3,12 @@
   "criteria": {
     "reached_speed_fly_3": {
       "conditions": {
+        "id": "fly_3",
         "locomotion": "Elytra",
         "maximum_speed": 0.0,
         "minimum_speed": 343.0,
-        "speedtype": "Vertical"
+        "speedtype": "Vertical",
+        "trigger_time": 1.0
       },
       "trigger": "fggc-speedometer:speed"
     }

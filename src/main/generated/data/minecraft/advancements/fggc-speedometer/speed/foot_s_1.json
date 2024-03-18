@@ -3,10 +3,12 @@
   "criteria": {
     "reached_speed_foot_s_1": {
       "conditions": {
+        "id": "foot_s_1",
         "locomotion": "OnFoot",
-        "maximum_speed": 1.8,
-        "minimum_speed": 1.8,
-        "speedtype": "Horizontal"
+        "maximum_speed": 1.83,
+        "minimum_speed": 1.83,
+        "speedtype": "Horizontal",
+        "trigger_time": 5.0
       },
       "trigger": "fggc-speedometer:speed"
     }

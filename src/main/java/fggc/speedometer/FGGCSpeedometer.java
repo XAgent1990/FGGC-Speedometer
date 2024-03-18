@@ -8,10 +8,10 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Style;
 import net.minecraft.text.Text;
-import net.minecraft.util.Util;
+import net.minecraft.text.TextColor;
 import net.minecraft.util.math.Vec3d;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -25,8 +25,8 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 
+import fggc.speedometer.util.FGGCLoadbar;
 import fggc.speedometer.util.FGGCSpeedometerData;
-import fggc.speedometer.util.IEntityDataSaver;
 
 import static net.minecraft.server.command.CommandManager.literal;
 import static net.minecraft.server.command.CommandManager.argument;
@@ -38,13 +38,13 @@ public class FGGCSpeedometer implements ModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger("fggc-speedometer");
 	public static final String MOD_ID = "fggc-speedometer"; 
 
+	private static final double DT = 1/20d;
+
 	public static FGGCCommandCriterion COMMAND = Criteria.register(new FGGCCommandCriterion());
 	public static FGGCSpeedCriterion SPEED = Criteria.register(new FGGCSpeedCriterion());
 
 	static final byte ListSize = 20;
 	static ArrayList<Double> vels, velsH, velsV;
-
-	public static long lastTimestamp = Util.getMeasuringTimeMs();
 
 	public enum SpeedometerMode{
 		An,
@@ -86,13 +86,12 @@ public class FGGCSpeedometer implements ModInitializer {
 			for(String name : server.getPlayerNames()){
 				tickPlayer(server, server.getPlayerManager().getPlayer(name), name);
 			}
-			lastTimestamp = Util.getMeasuringTimeMs();
 		});
 
 		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
 			ServerPlayerEntity player = handler.player;
 			String name = player.getName().getString();
-			SpeedometerMode mode = FGGCSpeedometerData.getMode((IEntityDataSaver)player);
+			SpeedometerMode mode = FGGCSpeedometerData.getMode(player);
 			PL.setMode(name, mode);
 		});
 
@@ -100,7 +99,7 @@ public class FGGCSpeedometer implements ModInitializer {
 			ServerPlayerEntity player = handler.player;
 			String name = player.getName().getString();
 			SpeedometerMode mode = PL.getMode(PL.index(name));
-			FGGCSpeedometerData.setMode((IEntityDataSaver)player, mode);
+			FGGCSpeedometerData.setMode(player, mode);
 		});
 
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
@@ -147,7 +146,7 @@ public class FGGCSpeedometer implements ModInitializer {
 		String name;
 		SpeedometerMode mode;
 		double timer;
-		long deltaTimeMs;
+		double loadPercent;
 		ArrayList<Double> velocities, velocitiesH, velocitiesV;
 		Vec3d lastPos;
 		PlayerTracker(String name){
@@ -230,7 +229,6 @@ public class FGGCSpeedometer implements ModInitializer {
 		public void addTimer(byte index, double dt){ pt.get(index).timer += dt; }
 		public void resetTimer(byte index){ pt.get(index).timer = 0d; }
 		public double getTimer(byte index){ return pt.get(index).timer; }
-		public Long getDeltaTimeMs(byte index){ return pt.get(index).deltaTimeMs; }
 		private boolean exists(String name){
 			for(PlayerTracker item : pt){
 				if(!item.name.equals(name)) continue;
@@ -272,7 +270,7 @@ public class FGGCSpeedometer implements ModInitializer {
 	private void tickPlayer(MinecraftServer server, ServerPlayerEntity player, String name){
 		byte index = PL.append(name, player);
 		if(player.isOnGround()) PL.resetTimer(index);
-		else PL.addTimer(index, PL.getDeltaTimeMs(index) / 1000d);
+		else PL.addTimer(index, DT);
 		if(PL.getMode(index) == SpeedometerMode.An ||
 		  (PL.getMode(index) == SpeedometerMode.Flugmodus && PL.getTimer(index) >= 1)){
 
@@ -297,16 +295,15 @@ public class FGGCSpeedometer implements ModInitializer {
 				velsV.remove(0);
 			velsV.add(vV);
 			SPEED.trigger(player, Speedtype.Vertical, arrayListMin(PL.pt.get(index).velocitiesV), arrayListMax(PL.pt.get(index).velocitiesV));
-			
-			if (v >= 343) {
-				Vec3d pos = player.getPos();
-				player.world.playSound(pos.x, pos.y, pos.z, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1, 1, true);
-			}
 
-			String text = "Geschwindigkeit: " + vH + "m/s";
+			double loadPercent = PL.pt.get(index).loadPercent;
+			MutableText text = Text.literal("");
+			if(loadPercent > 0) text.append(Text.literal(FGGCLoadbar.LEFT.getLoadbar(loadPercent)).setStyle(color(loadPercent)));
+			text.append(Text.literal(" Geschwindigkeit: " + String.format("%.2f", vH) + "m/s").setStyle(color(-1)));
 			//if(!p.isOnGround())
-			text += " | Fluggeschwindigkeit: " + v + "m/s";
-			player.sendMessage(Text.literal(text), true);
+			text.append(Text.literal(" | Fluggeschwindigkeit: " + String.format("%.2f", v) + "m/s ").setStyle(color(-1)));
+			if(loadPercent > 0) text.append(Text.literal(FGGCLoadbar.RIGHT.getLoadbar(loadPercent)).setStyle(color(loadPercent)));
+			player.sendMessage(text, true);
 		}
 	}
 
@@ -323,15 +320,48 @@ public class FGGCSpeedometer implements ModInitializer {
 		double max = 0d;
 		double y = 0d;
 		for(double x : arr){
-			if(x > max){
-				y = max;
-				max = x;
-			}
+			if(x > 0 && x <= max) y = max;
+			if(x > max) max = x;
 		}
 		return y > 0 ? max : 0d;
 	}
 
+	private static Style color(double percent){
+		if(percent == -1) return Style.EMPTY.withColor(TextColor.parse("#ffffff"));
+		String hex = "#";
+		if(percent < 50) {
+			hex += "ff";
+			hex += percentToHex(percent, 0, 50, (short)0, (short)255);
+		} else {
+			hex += percentToHex(percent, 100, 50, (short)0, (short)255);
+			hex += "ff";
+		}
+		hex += "00";
+		return Style.EMPTY.withColor(TextColor.parse(hex));
+	}
+
+	private static String percentToHex(double percent, double percentMin, double percentMax, short hexMin, short hexMax){
+		String hex = "";
+		if(percentMin > percentMax){
+			percent = percentMin + percentMax - percent;
+			double temp = percentMin;
+			percentMin = percentMax;
+			percentMax = temp;
+		}
+		if(percent < percentMin) percent = percentMin;
+		if(percent > percentMax) percent = percentMax;
+		short i = (short)(Math.floor((percent - percentMin) * hexMax / (percentMax - percentMin)) + hexMin);
+		short x = (short)Math.floorDiv(i, 16);
+		short y = (short)Math.floorMod(i, 16);
+		hex = Integer.toHexString(x) + Integer.toHexString(y);
+		return hex;
+	}
+
 	public static void log(String text){
 		LOGGER.info("[FGGC-Speedometer] " + text);
+	}
+
+	public static void setPercent(String name, double percent){
+		PL.pt.get(PL.index(name)).loadPercent = percent;
 	}
 }

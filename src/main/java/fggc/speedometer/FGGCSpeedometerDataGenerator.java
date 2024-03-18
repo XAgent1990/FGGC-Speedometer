@@ -31,8 +31,8 @@ public class FGGCSpeedometerDataGenerator implements DataGeneratorEntrypoint {
         @SuppressWarnings("unused")
         @Override
         public void generateAdvancement(Consumer<Advancement> consumer) {
-            String speedName = "reached_speed_";
-            String speedDir = "/speed";
+            final String speedName = "reached_speed_";
+            final String speedDir = "/speed/";
             NbtCompound nbt = new NbtCompound();
             NbtCompound nbt1 = new NbtCompound();
             NbtList nbtlist = new NbtList();
@@ -67,6 +67,7 @@ public class FGGCSpeedometerDataGenerator implements DataGeneratorEntrypoint {
             .criterion("used_command", new FGGCCommandCriterion.Conditions(Extended.EMPTY))
             .build(consumer, FGGCSpeedometer.MOD_ID + "/root");
             
+            final String boat1 = "boat_1";
             Advancement boat_1 = Advancement.Builder.create().parent(rootAdvancement)
             .display(
                 Items.OAK_BOAT, // The display icon
@@ -80,13 +81,15 @@ public class FGGCSpeedometerDataGenerator implements DataGeneratorEntrypoint {
             )
             // The first string used in criterion is the name referenced by other
             // advancements when they want to have 'requirements'
-            .criterion(speedName + "boat_1", new FGGCSpeedCriterion.Conditions(Extended.EMPTY,
+            .criterion(speedName + boat1, new FGGCSpeedCriterion.Conditions(Extended.EMPTY, boat1,
                 Speedtype.Horizontal, 
                 7.9d, 
                 8.1d, 
-                Locomotion.Boat
-            )).build(consumer, FGGCSpeedometer.MOD_ID + speedDir + "/boat_1");
+                Locomotion.Boat,
+                5
+            )).build(consumer, FGGCSpeedometer.MOD_ID + speedDir + boat1);
             
+            final String boats1 = "boat_s_1";
             Advancement boat_s_1 = Advancement.Builder.create().parent(boat_1)
             .display(
                 Items.OAK_BOAT, // The display icon
@@ -100,13 +103,15 @@ public class FGGCSpeedometerDataGenerator implements DataGeneratorEntrypoint {
             )
             // The first string used in criterion is the name referenced by other
             // advancements when they want to have 'requirements'
-            .criterion(speedName + "boat_s_1", new FGGCSpeedCriterion.Conditions(Extended.EMPTY,
+            .criterion(speedName + boats1, new FGGCSpeedCriterion.Conditions(Extended.EMPTY, boats1,
                 Speedtype.Horizontal, 
                 2d, 
                 2d, 
-                Locomotion.Boat
-            )).build(consumer, FGGCSpeedometer.MOD_ID + speedDir + "/boat_s_1");
+                Locomotion.Boat,
+                5
+            )).build(consumer, FGGCSpeedometer.MOD_ID + speedDir + boats1);
             
+            final String boat2 = "boat_2";
             Advancement boat_2 = Advancement.Builder.create().parent(boat_1)
             .display(
                 Items.OAK_BOAT, // The display icon
@@ -120,13 +125,15 @@ public class FGGCSpeedometerDataGenerator implements DataGeneratorEntrypoint {
             )
             // The first string used in criterion is the name referenced by other
             // advancements when they want to have 'requirements'
-            .criterion(speedName + "boat_2", new FGGCSpeedCriterion.Conditions(Extended.EMPTY, 
+            .criterion(speedName + boat2, new FGGCSpeedCriterion.Conditions(Extended.EMPTY, boat2,
                 Speedtype.Horizontal, 
                 38d, 
                 42d, 
-                Locomotion.Boat
-            )).build(consumer, FGGCSpeedometer.MOD_ID + speedDir + "/boat_2");
+                Locomotion.Boat,
+                3
+            )).build(consumer, FGGCSpeedometer.MOD_ID + speedDir + boat2);
             
+            final String boat3 = "boat_3";
             Advancement boat_3 = Advancement.Builder.create().parent(boat_2)
             .display(
                 Items.OAK_BOAT, // The display icon
@@ -140,15 +147,17 @@ public class FGGCSpeedometerDataGenerator implements DataGeneratorEntrypoint {
             )
             // The first string used in criterion is the name referenced by other
             // advancements when they want to have 'requirements'
-            .criterion(speedName + "boat_3", new FGGCSpeedCriterion.Conditions(Extended.EMPTY, 
+            .criterion(speedName + boat3, new FGGCSpeedCriterion.Conditions(Extended.EMPTY, boat3,
                 Speedtype.Horizontal, 
                 60d, 
                 0d, 
-                Locomotion.Boat
-            )).build(consumer, FGGCSpeedometer.MOD_ID + speedDir + "/boat_3");
+                Locomotion.Boat,
+                3
+            )).build(consumer, FGGCSpeedometer.MOD_ID + speedDir + boat3);
             
                 
             
+            final String cart1 = "cart_1";
             Advancement cart_1 = Advancement.Builder.create().parent(rootAdvancement)
             .display(
                 Items.MINECART, // The display icon
@@ -162,13 +171,15 @@ public class FGGCSpeedometerDataGenerator implements DataGeneratorEntrypoint {
             )
             // The first string used in criterion is the name referenced by other
             // advancements when they want to have 'requirements'
-            .criterion(speedName + "cart_1", new FGGCSpeedCriterion.Conditions(Extended.EMPTY,
+            .criterion(speedName + cart1, new FGGCSpeedCriterion.Conditions(Extended.EMPTY, cart1,
                 Speedtype.Horizontal, 
                 7.9d, 
                 8.1d, 
-                Locomotion.Minecart
-            )).build(consumer, FGGCSpeedometer.MOD_ID + speedDir + "/cart_1");
+                Locomotion.Minecart,
+                5
+            )).build(consumer, FGGCSpeedometer.MOD_ID + speedDir + cart1);
         
+            final String carts1 = "cart_s_1";
             Advancement cart_s_1 = Advancement.Builder.create().parent(cart_1)
             .display(
                 Items.MINECART, // The display icon
@@ -182,15 +193,17 @@ public class FGGCSpeedometerDataGenerator implements DataGeneratorEntrypoint {
             )
             // The first string used in criterion is the name referenced by other
             // advancements when they want to have 'requirements'
-            .criterion(speedName + "cart_s_1", new FGGCSpeedCriterion.Conditions(Extended.EMPTY,
+            .criterion(speedName + carts1, new FGGCSpeedCriterion.Conditions(Extended.EMPTY, carts1,
                 Speedtype.Horizontal, 
                 11.2d, 
                 11.4d, 
-                Locomotion.Minecart
-            )).build(consumer, FGGCSpeedometer.MOD_ID + speedDir + "/cart_s_1");
+                Locomotion.Minecart,
+                3
+            )).build(consumer, FGGCSpeedometer.MOD_ID + speedDir + carts1);
 
 
 
+            final String swim1 = "swim_1";
             Advancement swim_1 = Advancement.Builder.create().parent(rootAdvancement)
             .display(
                 Items.WATER_BUCKET, // The display icon
@@ -204,13 +217,15 @@ public class FGGCSpeedometerDataGenerator implements DataGeneratorEntrypoint {
             )
             // The first string used in criterion is the name referenced by other
             // advancements when they want to have 'requirements'
-            .criterion(speedName + "swim_1", new FGGCSpeedCriterion.Conditions(Extended.EMPTY,
+            .criterion(speedName + swim1, new FGGCSpeedCriterion.Conditions(Extended.EMPTY, swim1,
                 Speedtype.Horizontal, 
                 3.92d, 
                 3.92d, 
-                Locomotion.Swimming
-            )).build(consumer, FGGCSpeedometer.MOD_ID + speedDir + "/swim_1");
+                Locomotion.Swimming,
+                5
+            )).build(consumer, FGGCSpeedometer.MOD_ID + speedDir + swim1);
             
+            final String swims1 = "swim_s_1";
             Advancement swim_s_1 = Advancement.Builder.create().parent(swim_1)
             .display(
                 Items.WATER_BUCKET, // The display icon
@@ -224,13 +239,15 @@ public class FGGCSpeedometerDataGenerator implements DataGeneratorEntrypoint {
             )
             // The first string used in criterion is the name referenced by other
             // advancements when they want to have 'requirements'
-            .criterion(speedName + "swim_s_1", new FGGCSpeedCriterion.Conditions(Extended.EMPTY,
+            .criterion(speedName + swims1, new FGGCSpeedCriterion.Conditions(Extended.EMPTY, swims1,
                 Speedtype.Horizontal, 
                 4d, 
                 4d, 
-                Locomotion.Swimming
-            )).build(consumer, FGGCSpeedometer.MOD_ID + speedDir + "/swim_s_1");
+                Locomotion.Swimming,
+                5
+            )).build(consumer, FGGCSpeedometer.MOD_ID + speedDir + swims1);
             
+            final String swim21 = "swim_2_1";
             Advancement swim_2_1 = Advancement.Builder.create().parent(swim_1)
             .display(
                 Items.WATER_BUCKET, // The display icon
@@ -244,13 +261,15 @@ public class FGGCSpeedometerDataGenerator implements DataGeneratorEntrypoint {
             )
             // The first string used in criterion is the name referenced by other
             // advancements when they want to have 'requirements'
-            .criterion(speedName + "swim_2_1", new FGGCSpeedCriterion.Conditions(Extended.EMPTY, 
+            .criterion(speedName + swim21, new FGGCSpeedCriterion.Conditions(Extended.EMPTY, swim21,
                 Speedtype.Horizontal, 
                 5.31d, 
                 5.31d, 
-                Locomotion.Swimming
-            )).build(consumer, FGGCSpeedometer.MOD_ID + speedDir + "/swim_2_1");
+                Locomotion.Swimming,
+                5
+            )).build(consumer, FGGCSpeedometer.MOD_ID + speedDir + swim21);
             
+            final String swims2 = "swim_s_2";
             Advancement swim_s_2 = Advancement.Builder.create().parent(swim_2_1)
             .display(
                 Items.WATER_BUCKET, // The display icon
@@ -264,13 +283,15 @@ public class FGGCSpeedometerDataGenerator implements DataGeneratorEntrypoint {
             )
             // The first string used in criterion is the name referenced by other
             // advancements when they want to have 'requirements'
-            .criterion(speedName + "swim_s_2", new FGGCSpeedCriterion.Conditions(Extended.EMPTY, 
+            .criterion(speedName + swims2, new FGGCSpeedCriterion.Conditions(Extended.EMPTY, swims2,
                 Speedtype.Horizontal, 
                 5.61d, 
                 5.61d, 
-                Locomotion.Swimming
-            )).build(consumer, FGGCSpeedometer.MOD_ID + speedDir + "/swim_s_2");
+                Locomotion.Swimming,
+                3
+            )).build(consumer, FGGCSpeedometer.MOD_ID + speedDir + swims2);
             
+            final String swim22 = "swim_2_2";
             Advancement swim_2_2 = Advancement.Builder.create().parent(swim_1)
             .display(
                 Items.WATER_BUCKET, // The display icon
@@ -284,13 +305,15 @@ public class FGGCSpeedometerDataGenerator implements DataGeneratorEntrypoint {
             )
             // The first string used in criterion is the name referenced by other
             // advancements when they want to have 'requirements'
-            .criterion(speedName + "swim_2_2", new FGGCSpeedCriterion.Conditions(Extended.EMPTY, 
+            .criterion(speedName + swim22, new FGGCSpeedCriterion.Conditions(Extended.EMPTY, swim22,
                 Speedtype.Horizontal, 
+                9.75d, 
                 9.8d, 
-                9.8d, 
-                Locomotion.Swimming
-            )).build(consumer, FGGCSpeedometer.MOD_ID + speedDir + "/swim_2_2");
+                Locomotion.Swimming,
+                5
+            )).build(consumer, FGGCSpeedometer.MOD_ID + speedDir + swim22);
             
+            final String swim3 = "swim_3";
             Advancement swim_3 = Advancement.Builder.create().parent(swim_2_1)
             .display(
                 Items.WATER_BUCKET, // The display icon
@@ -304,13 +327,15 @@ public class FGGCSpeedometerDataGenerator implements DataGeneratorEntrypoint {
             )
             // The first string used in criterion is the name referenced by other
             // advancements when they want to have 'requirements'
-            .criterion(speedName + "swim_3", new FGGCSpeedCriterion.Conditions(Extended.EMPTY, 
+            .criterion(speedName + swim3, new FGGCSpeedCriterion.Conditions(Extended.EMPTY, swim3,
                 Speedtype.Horizontal, 
                 30d, 
                 37d, 
-                Locomotion.Swimming
-            )).build(consumer, FGGCSpeedometer.MOD_ID + speedDir + "/swim_3");
+                Locomotion.Swimming,
+                3
+            )).build(consumer, FGGCSpeedometer.MOD_ID + speedDir + swim3);
             
+            final String swims3 = "swim_s_3";
             Advancement swim_s_3 = Advancement.Builder.create().parent(swim_3)
             .display(
                 Items.WATER_BUCKET, // The display icon
@@ -324,15 +349,17 @@ public class FGGCSpeedometerDataGenerator implements DataGeneratorEntrypoint {
             )
             // The first string used in criterion is the name referenced by other
             // advancements when they want to have 'requirements'
-            .criterion(speedName + "swim_s_3", new FGGCSpeedCriterion.Conditions(Extended.EMPTY, 
+            .criterion(speedName + swims3, new FGGCSpeedCriterion.Conditions(Extended.EMPTY, swims3,
                 Speedtype.Horizontal, 
                 60d, 
                 65d, 
-                Locomotion.Swimming
-            )).build(consumer, FGGCSpeedometer.MOD_ID + speedDir + "/swim_s_3");
+                Locomotion.Swimming,
+                2
+            )).build(consumer, FGGCSpeedometer.MOD_ID + speedDir + swims3);
 
 
 
+            final String foot1 = "foot_1";
             Advancement foot_1 = Advancement.Builder.create().parent(rootAdvancement)
             .display(
                 Items.LEATHER_BOOTS, // The display icon
@@ -346,13 +373,15 @@ public class FGGCSpeedometerDataGenerator implements DataGeneratorEntrypoint {
             )
             // The first string used in criterion is the name referenced by other
             // advancements when they want to have 'requirements'
-            .criterion(speedName + "foot_1", new FGGCSpeedCriterion.Conditions(Extended.EMPTY,
+            .criterion(speedName + foot1, new FGGCSpeedCriterion.Conditions(Extended.EMPTY, foot1,
                 Speedtype.Total, 
                 5.61d, 
                 5.73d, 
-                Locomotion.OnFoot
-            )).build(consumer, FGGCSpeedometer.MOD_ID + speedDir + "/foot_1");
+                Locomotion.OnFoot,
+                5
+            )).build(consumer, FGGCSpeedometer.MOD_ID + speedDir + foot1);
             
+            final String foots1 = "foot_s_1";
             Advancement foot_s_1 = Advancement.Builder.create().parent(foot_1)
             .display(
                 Items.LEATHER_BOOTS, // The display icon
@@ -366,13 +395,15 @@ public class FGGCSpeedometerDataGenerator implements DataGeneratorEntrypoint {
             )
             // The first string used in criterion is the name referenced by other
             // advancements when they want to have 'requirements'
-            .criterion(speedName + "foot_s_1", new FGGCSpeedCriterion.Conditions(Extended.EMPTY,
+            .criterion(speedName + foots1, new FGGCSpeedCriterion.Conditions(Extended.EMPTY, foots1,
                 Speedtype.Horizontal, 
-                1.8d, 
-                1.8d, 
-                Locomotion.OnFoot
-            )).build(consumer, FGGCSpeedometer.MOD_ID + speedDir + "/foot_s_1");
+                1.83d, 
+                1.83d, 
+                Locomotion.OnFoot,
+                5
+            )).build(consumer, FGGCSpeedometer.MOD_ID + speedDir + foots1);
             
+            final String foot2 = "foot_2";
             Advancement foot_2 = Advancement.Builder.create().parent(foot_1)
             .display(
                 Items.LEATHER_BOOTS, // The display icon
@@ -386,15 +417,17 @@ public class FGGCSpeedometerDataGenerator implements DataGeneratorEntrypoint {
             )
             // The first string used in criterion is the name referenced by other
             // advancements when they want to have 'requirements'
-            .criterion(speedName + "foot_2", new FGGCSpeedCriterion.Conditions(Extended.EMPTY,
+            .criterion(speedName + foot2, new FGGCSpeedCriterion.Conditions(Extended.EMPTY, foot2,
                 Speedtype.Horizontal, 
                 10.4d, 
                 10.5d, 
-                Locomotion.OnFoot
-            )).build(consumer, FGGCSpeedometer.MOD_ID + speedDir + "/foot_2");
+                Locomotion.OnFoot,
+                5
+            )).build(consumer, FGGCSpeedometer.MOD_ID + speedDir + foot2);
 
 
 
+            final String fall1 = "fall_1";
             Advancement fall_1 = Advancement.Builder.create().parent(rootAdvancement)
             .display(
                 Items.ANVIL, // The display icon
@@ -408,13 +441,15 @@ public class FGGCSpeedometerDataGenerator implements DataGeneratorEntrypoint {
             )
             // The first string used in criterion is the name referenced by other
             // advancements when they want to have 'requirements'
-            .criterion(speedName + "fall_1", new FGGCSpeedCriterion.Conditions(Extended.EMPTY,
+            .criterion(speedName + fall1, new FGGCSpeedCriterion.Conditions(Extended.EMPTY, fall1,
                 Speedtype.Vertical, 
                 13d, 
                 100d, 
-                Locomotion.Falling
-            )).build(consumer, FGGCSpeedometer.MOD_ID + speedDir + "/fall_1");
+                Locomotion.Falling,
+                0
+            )).build(consumer, FGGCSpeedometer.MOD_ID + speedDir + fall1);
 
+            final String fall2 = "fall_2";
             Advancement fall_2 = Advancement.Builder.create().parent(fall_1)
             .display(
                 Items.ANVIL, // The display icon
@@ -428,13 +463,15 @@ public class FGGCSpeedometerDataGenerator implements DataGeneratorEntrypoint {
             )
             // The first string used in criterion is the name referenced by other
             // advancements when they want to have 'requirements'
-            .criterion(speedName + "fall_2", new FGGCSpeedCriterion.Conditions(Extended.EMPTY,
+            .criterion(speedName + fall2, new FGGCSpeedCriterion.Conditions(Extended.EMPTY, fall2,
                 Speedtype.Vertical, 
                 32d, 
                 100d, 
-                Locomotion.Falling
-            )).build(consumer, FGGCSpeedometer.MOD_ID + speedDir + "/fall_2");
+                Locomotion.Falling,
+                0
+            )).build(consumer, FGGCSpeedometer.MOD_ID + speedDir + fall2);
 
+            final String fall3 = "fall_3";
             Advancement fall_3 = Advancement.Builder.create().parent(fall_2)
             .display(
                 Items.ANVIL, // The display icon
@@ -448,15 +485,17 @@ public class FGGCSpeedometerDataGenerator implements DataGeneratorEntrypoint {
             )
             // The first string used in criterion is the name referenced by other
             // advancements when they want to have 'requirements'
-            .criterion(speedName + "fall_3", new FGGCSpeedCriterion.Conditions(Extended.EMPTY,
+            .criterion(speedName + fall3, new FGGCSpeedCriterion.Conditions(Extended.EMPTY, fall3,
                 Speedtype.Vertical, 
-                78.395d, 
+                78.35d, 
                 100d, 
-                Locomotion.Falling
-            )).build(consumer, FGGCSpeedometer.MOD_ID + speedDir + "/fall_3");
+                Locomotion.Falling,
+                3
+            )).build(consumer, FGGCSpeedometer.MOD_ID + speedDir + fall3);
 
 
 
+            final String fly1 = "fly_1";
             Advancement fly_1 = Advancement.Builder.create().parent(rootAdvancement)
             .display(
                 Items.ELYTRA, // The display icon
@@ -470,13 +509,15 @@ public class FGGCSpeedometerDataGenerator implements DataGeneratorEntrypoint {
             )
             // The first string used in criterion is the name referenced by other
             // advancements when they want to have 'requirements'
-            .criterion(speedName + "fly_1", new FGGCSpeedCriterion.Conditions(Extended.EMPTY,
+            .criterion(speedName + fly1, new FGGCSpeedCriterion.Conditions(Extended.EMPTY, fly1,
                 Speedtype.Total, 
                 30d, 
                 0d, 
-                Locomotion.Elytra
-            )).build(consumer, FGGCSpeedometer.MOD_ID + speedDir + "/fly_1");
+                Locomotion.Elytra,
+                5
+            )).build(consumer, FGGCSpeedometer.MOD_ID + speedDir + fly1);
 
+            final String fly2 = "fly_2";
             Advancement fly_2 = Advancement.Builder.create().parent(fly_1)
             .display(
                 Items.ELYTRA, // The display icon
@@ -490,13 +531,15 @@ public class FGGCSpeedometerDataGenerator implements DataGeneratorEntrypoint {
             )
             // The first string used in criterion is the name referenced by other
             // advancements when they want to have 'requirements'
-            .criterion(speedName + "fly_2", new FGGCSpeedCriterion.Conditions(Extended.EMPTY,
+            .criterion(speedName + fly2, new FGGCSpeedCriterion.Conditions(Extended.EMPTY, fly2,
                 Speedtype.Vertical, 
                 100d, 
                 0d, 
-                Locomotion.Elytra
-            )).build(consumer, FGGCSpeedometer.MOD_ID + speedDir + "/fly_2");
+                Locomotion.Elytra,
+                3
+            )).build(consumer, FGGCSpeedometer.MOD_ID + speedDir + fly2);
 
+            final String fly3 = "fly_3";
             Advancement fly_3 = Advancement.Builder.create().parent(fly_2)
             .display(
                 Items.ELYTRA, // The display icon
@@ -510,12 +553,13 @@ public class FGGCSpeedometerDataGenerator implements DataGeneratorEntrypoint {
             )
             // The first string used in criterion is the name referenced by other
             // advancements when they want to have 'requirements'
-            .criterion(speedName + "fly_3", new FGGCSpeedCriterion.Conditions(Extended.EMPTY,
+            .criterion(speedName + fly3, new FGGCSpeedCriterion.Conditions(Extended.EMPTY, fly3,
                 Speedtype.Vertical, 
                 343d, 
                 0d, 
-                Locomotion.Elytra
-            )).build(consumer, FGGCSpeedometer.MOD_ID + speedDir + "/fly_3");
+                Locomotion.Elytra,
+                1
+            )).build(consumer, FGGCSpeedometer.MOD_ID + speedDir + fly3);
         }
     }
 }

@@ -3,10 +3,12 @@
   "criteria": {
     "reached_speed_cart_s_1": {
       "conditions": {
+        "id": "cart_s_1",
         "locomotion": "Minecart",
         "maximum_speed": 11.4,
         "minimum_speed": 11.2,
-        "speedtype": "Horizontal"
+        "speedtype": "Horizontal",
+        "trigger_time": 3.0
       },
       "trigger": "fggc-speedometer:speed"
     }

@@ -3,10 +3,12 @@
   "criteria": {
     "reached_speed_boat_3": {
       "conditions": {
+        "id": "boat_3",
         "locomotion": "Boat",
         "maximum_speed": 0.0,
         "minimum_speed": 60.0,
-        "speedtype": "Horizontal"
+        "speedtype": "Horizontal",
+        "trigger_time": 3.0
       },
       "trigger": "fggc-speedometer:speed"
     }

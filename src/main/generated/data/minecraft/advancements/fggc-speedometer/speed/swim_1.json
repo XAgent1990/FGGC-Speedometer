@@ -3,10 +3,12 @@
   "criteria": {
     "reached_speed_swim_1": {
       "conditions": {
+        "id": "swim_1",
         "locomotion": "Swimming",
         "maximum_speed": 3.92,
         "minimum_speed": 3.92,
-        "speedtype": "Horizontal"
+        "speedtype": "Horizontal",
+        "trigger_time": 5.0
       },
       "trigger": "fggc-speedometer:speed"
     }
